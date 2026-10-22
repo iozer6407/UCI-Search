@@ -1,0 +1,105 @@
+/* Basic page layout */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 30px;
+    background: #f5f7fa;
+    color: #333;
+}
+
+/* Page title */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 40px;
+}
+
+/* Search bar + button container */
+#search_input {
+    width: 60%;
+    padding: 12px 15px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+#search_input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 6px rgba(52,152,219,0.3);
+}
+
+/* Button */
+#search_button {
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #3498db;
+    color: white;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#search_button:hover {
+    background: #2980b9;
+}
+
+#search_button:active {
+    transform: scale(0.97);
+}
+
+/* Horizontal rule */
+hr {
+    margin: 40px 0;
+    border: none;
+    height: 1px;
+    background: #ddd;
+}
+
+/* Results section title */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+/* Results area appearance */
+#results_area {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 10px;
+    min-height: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e1e4e8;
+}
+
+/* Result list formatting */
+#results_area ul {
+    margin: 10px 0;
+    padding-left: 22px;
+}
+
+#results_area li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+/* Error and processing messages */
+#results_area p {
+    font-size: 16px;
+}
+
+#results_area p[style*="color: red"] {
+    background: #ffeaea;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ffb3b3;
+}
+
+#results_area p:contains("Processing") {
+    color: #555;
+}

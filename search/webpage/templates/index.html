@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>CS 121 Search Engine</h1>
+    
+    <input type="text" id="search_input" placeholder="Enter text for search...">
+    
+    <button id="search_button">Process</button>
+    
+    <hr>
+    
+    <h2>Results</h2>
+    <div id="results_area">
+        <p>Type your search and click 'Process' to see results.</p>
+    </div>
+
+    <script>
+        document.getElementById('search_button').addEventListener('click', async () => {
+            const textToProcess = document.getElementById('search_input').value;
+            const resultsDiv = document.getElementById('results_area');
+            resultsDiv.innerHTML = '<p>Processing...</p>';
+
+            try {
+                // Use the standard JavaScript fetch API to talk to the Flask backend
+                const response = await fetch('/api/process_text', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ text: textToProcess })
+                });
+
+                const data = await response.json();
+
+                resultsDiv.innerHTML = '';
+                
+                if (response.ok) {
+                    if (data.result_count === 0) {
+                        let htmlContent = `
+                            <h3>Processed Search: "${data.search}"</h3>
+                            <p>Total Results: <strong>0</strong></p>
+                            <p>Response Time: <strong>${data.elapsed_time_ms} ms</strong></p>
+                            <p>❌ <b>NO RESULTS FOUND.</b> Please try a different query.</p>
+                        `;
+                        resultsDiv.innerHTML = htmlContent;
+                    } 
+                    else {
+                        // Display the results
+                        let htmlContent = `
+                            <h3>Processed Search: "${data.search}"</h3>
+                            <p>Total Results: <strong>${data.result_count}</strong></p>
+                            <p>Response Time: <strong>${data.elapsed_time_ms} ms</strong></p>
+                            <h4>Results:</h4>
+                            <ul>
+                                ${data.results.map(url => `<li><a href="${url}" target="_blank">${url}</a></li>`).join('')}
+                            </ul>
+                        `;
+                        resultsDiv.innerHTML = htmlContent;
+                    }
+                } else {
+                    resultsDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">Network Error: Could not connect to the Python server.</p>`;
+            }
+        });
+
+        document.getElementById('search_input').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById('search_button').click();
+            }
+        });
+    </script>
+</body>
+</html>
